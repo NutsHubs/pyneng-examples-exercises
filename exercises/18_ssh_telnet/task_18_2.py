@@ -46,3 +46,6 @@ R1#
 """
 
 commands = ["logging 10.255.255.1", "logging buffered 20010", "no logging console"]
+
+
+
