@@ -41,3 +41,4 @@ if __name__ == "__main__":
 
     for dev in devices:
         print(send_config_commands(dev, commands))
+
