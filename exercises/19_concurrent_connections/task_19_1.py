@@ -23,3 +23,15 @@
 а затем запустить эту функцию в разных потоках для разных
 IP-адресов с помощью concurrent.futures (это надо сделать в функции ping_ip_addresses).
 """
+import subprocess
+
+def ping_ip_addresses(ip_list:list, limit=3):
+    result = list(), list()
+    pass
+
+
+def ping_check(address):
+    check = False
+    subprocess.run('dir', stdout=subprocess.PIPE)
+    return check
+
