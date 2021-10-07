@@ -42,7 +42,7 @@ def ping_ip_addresses(ip_list, thread_max=3):
     with conc.ThreadPoolExecutor(max_workers=thread_max) as executor:
         result = executor.map(ping_ip_address, ip_list)
         for ip, code in zip(ip_list, result):
-            if code==0:
+            if code == 0:
                 reach.append(ip)
             else:
                 unreach.append(ip)
