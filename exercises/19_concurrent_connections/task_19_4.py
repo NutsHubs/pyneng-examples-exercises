@@ -105,3 +105,40 @@ R3#
 
 Для выполнения задания можно создавать любые дополнительные функции.
 """
+import yaml
+from itertools import repeat
+from netmiko import ConnectHandler
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
+
+def send_commands_to_devices(devices, filename, *, show=None, config=None, limit=3):
+    if show and config:
+        raise ValueError('Need only one argument: show or config')
+    with ThreadPoolExecutor(max_workers=limit) as executor:
+        result = executor.map(send_command,
+                              devices,
+                              repeat(True if config else False),
+                              repeat(show if show else config))
+        for out in result:
+            with open(filename, 'w') as fw:
+                fw.writelines(out)
+
+
+def send_command(device, type_command, commands):
+    with ConnectHandler(**device) as ssh:
+        ssh.enable()
+        ssh.conn_timeout = 15
+        if type_command:
+            ssh.find_prompt()
+            return ssh.send_config_set(commands)
+        else:
+            return ssh.send_command(commands)
+
+
+if __name__ == '__main__':
+    with open('devices.yaml') as f:
+        devices_from_file = yaml.safe_load(f)
+
+    send_commands_to_devices(devices_from_file,
+                             'outs.txt',
+                             show='sh ip int br')

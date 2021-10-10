@@ -38,20 +38,23 @@ import yaml
 from netmiko import ConnectHandler
 from concurrent.futures import ThreadPoolExecutor
 from itertools import repeat
+import re
 
 
 def send_show_command_to_devices(devices, command, filename, limit=3):
     with ThreadPoolExecutor(max_workers=limit) as executor:
         result = executor.map(send_command, devices, repeat(command))
-        for
-    pass
+        for out in result:
+            with open(filename, 'w') as fw:
+                fw.writelines(out)
 
 
 def send_command(device, command):
     with ConnectHandler(**device) as ssh:
         ssh.enable()
         ssh.conn_timeout = 15
-        return ssh.send_command(command)
+        regex = re.compile(rf'^\w+#{command}\n.*', re.DOTALL)
+        return regex.search(ssh.send_command(command)).group()
 
 
 if __name__ == '__main__':
@@ -59,6 +62,8 @@ if __name__ == '__main__':
         devices_from_file = yaml.safe_load(f)
 
     send_show_command_to_devices(devices_from_file,
-                                 )
+                                 'sh ip int br',
+                                 'outs.txt',
+                                 3)
 
 

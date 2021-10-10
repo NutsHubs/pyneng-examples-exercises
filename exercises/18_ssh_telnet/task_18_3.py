@@ -55,13 +55,13 @@ commands = ["logging 10.255.255.1", "logging buffered 20010", "no logging consol
 command = "sh ip int br"
 
 
-def send_commands(device, **kwargs):
-    if len(kwargs.keys()) != 1:
+def send_commands(device, *, config=None, show=None):
+    if config and show:
         raise ValueError('Too many arguments. Need to only "show" or "config".')
-    elif 'show' in kwargs.keys():
-        return send_show_command(device, kwargs.get('show'))
-    elif 'config' in kwargs.keys():
-        return send_config_commands(device, kwargs.get('config'))
+    elif show:
+        return send_show_command(device, show)
+    elif config:
+        return send_config_commands(device, config)
     else:
         raise ValueError('Need to only "show" or "config".')
 
