@@ -1,0 +1,5 @@
+{% extends 'gre_ipsec_vpn_1.txt' %}
+{% block remote_isa %}{{ wan_ip_1 }}{% endblock %}
+{% block ip %}{{ tun_ip_2 }}{% endblock +%}
+{% block direct %}{{ wan_ip_2 }}{% endblock +%}
+{% block remote_tun %}{{ wan_ip_1 }}{% endblock +%}

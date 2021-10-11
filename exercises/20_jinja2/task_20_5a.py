@@ -45,3 +45,24 @@ data = {
     "tun_ip_1": "10.0.1.1 255.255.255.252",
     "tun_ip_2": "10.0.1.2 255.255.255.252",
 }
+
+src = ['Tunnel1', 'Tunnel4']
+dest = ['Tunnel2', 'Tunnel3', 'Tunnel8']
+
+
+def get_tunnel(tun_list_1, tun_list_2):
+    tun_set_1 = {int(tun.split('l')[1]) for tun in tun_list_1}
+    tun_set_2 = {int(tun.split('l')[1]) for tun in tun_list_2}
+    set_range = set(range(1, 15))
+    union = tun_set_1.union(tun_set_2)
+    print(union)
+    tun_x = 1
+    while tun_x in union:
+        tun_x += 1
+    print(tun_x)
+    print(set_range.difference(union))
+    pass
+
+if __name__ == '__main__':
+    get_tunnel(src, dest)
+    print(set(range(1, 10)))

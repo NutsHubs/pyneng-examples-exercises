@@ -1,0 +1,20 @@
+crypto isakmp policy {{ tun_num }}
+ encr aes
+ authentication pre-share
+ group 5
+ hash sha
+
+crypto isakmp key cisco address {% block remote_isa %}{{ wan_ip_2 }}{% endblock %}
+
+crypto ipsec transform-set AESSHA esp-aes esp-sha-hmac
+ mode transport
+
+crypto ipsec profile GRE
+ set transform-set AESSHA
+
+interface Tunnel {{ tun_num }}
+ ip address {% block ip %}{{ tun_ip_1 }}{% endblock +%}
+ tunnel source {% block direct %}{{ wan_ip_1 }}{% endblock +%}
+ tunnel destination {% block remote_tun %}{{ wan_ip_2 }}{% endblock +%}
+ tunnel protection ipsec profile GRE
+
