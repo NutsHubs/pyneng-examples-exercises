@@ -32,6 +32,9 @@ Out[3]:
  ('R3', 'Eth0/2'): ('R5', 'Eth0/0')}
 
 """
+import tabulate
+import pprint
+
 
 topology_example = {
     ("R1", "Eth0/0"): ("SW1", "Eth0/1"),
@@ -44,3 +47,17 @@ topology_example = {
     ("SW1", "Eth0/2"): ("R2", "Eth0/0"),
     ("SW1", "Eth0/3"): ("R3", "Eth0/0"),
 }
+
+
+class Topology:
+    def __init__(self, topology_dict):
+        self.topology = topology_dict
+        for key in list(topology_dict.keys()):
+            if key in topology_dict.values():
+                if topology_dict[topology_dict[key]] == key:
+                    self.topology.pop(key)
+
+
+top = Topology(topology_example)
+pprint.pprint(top.topology)
+

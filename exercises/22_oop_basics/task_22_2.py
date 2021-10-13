@@ -47,3 +47,5 @@ self._write_line(line)
 
 Он не должен делать ничего другого.
 """
+class CiscoTelnet:
+    pass
