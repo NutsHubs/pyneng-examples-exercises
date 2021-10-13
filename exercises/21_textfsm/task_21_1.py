@@ -16,7 +16,18 @@
 
 """
 from netmiko import ConnectHandler
+import textfsm
+from textfsm import clitable
+from tabulate import tabulate
 
+
+def parse_command_output(template, command_output):
+    """Return list() = [[headers], [processed_out], ..]"""
+    with open(template) as ft:
+        fsm = textfsm.TextFSM(ft)
+    cli_table = clitable.CliTable('index', 'templates')
+    processed_output = fsm.ParseText(command_output)
+    return [fsm.header] + processed_output
 
 # вызов функции должен выглядеть так
 if __name__ == "__main__":
@@ -27,8 +38,10 @@ if __name__ == "__main__":
         "password": "cisco",
         "secret": "cisco",
     }
-    with ConnectHandler(**r1_params) as r1:
+    '''with ConnectHandler(**r1_params) as r1:
         r1.enable()
         output = r1.send_command("sh ip int br")
-    result = parse_command_output("templates/sh_ip_int_br.template", output)
-    print(result)
+    '''
+    with open('output/sh_ip_int_br.txt') as f:
+        result = parse_command_output("templates/sh_ip_int_br.template", f.read())
+        print(tabulate(result))
