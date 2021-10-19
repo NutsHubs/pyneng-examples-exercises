@@ -83,7 +83,6 @@ class Topology:
         self.topology = self._normalize(topology_dict)
 
     def add_link(self, local, remote):
-        is_exists = False
         if local in self.topology:
             if self.topology[local] == remote:
                 print('Такое соединение существует')
@@ -124,15 +123,17 @@ class Topology:
         return topology_result
 
     def __add__(self, other):
-        result = self.topology
-        print(other)
-        for key in list(dict(other)):
-            result[key] = other[key]
-        return Topology(result)
+        result = Topology({})
+        result.topology = self.topology.copy()
+        for key, value in other.topology.items():
+            result.topology[key] = value
+        return result
+
 
 t1 = Topology(topology_example)
 t2 = Topology(topology_example2)
-pprint(t1.topology)
-pprint(t2.topology)
+#pprint(t1.topology)
+#pprint(t2.topology)
 t3 = t1 + t2
-pprint(t3.topology)
+#pprint(t3.topology)
+#pprint(t1.topology)
